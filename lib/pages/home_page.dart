@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
       body: ListView(
         children: [
           // Bagian stories (carousel horizontal)
-          Container(
+          SizedBox(
             height: 100,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -55,7 +55,7 @@ class HomePage extends StatelessWidget {
 class PostWidget extends StatelessWidget {
   final int postIndex;
 
-  PostWidget({required this.postIndex});
+  const PostWidget({super.key, required this.postIndex});
 
   @override
   Widget build(BuildContext context) {

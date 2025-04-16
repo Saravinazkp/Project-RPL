@@ -4,12 +4,15 @@ import 'pages/search_page.dart';
 import 'pages/new_post_page.dart';
 import 'pages/notifications_page.dart';
 import 'pages/profile_page.dart';
+import 'pages/landing_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   // Root widget dari aplikasi
   @override
   Widget build(BuildContext context) {
@@ -19,12 +22,18 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MainScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const LandingPage(),
+        '/main': (context) => const MainScreen(),
+      },
     );
   }
 }
 
 class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
   @override
   State<StatefulWidget> createState() => _MainScreenState();
 }
@@ -33,11 +42,11 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    HomePage(),
-    SearchPage(),
-    NewPostPage(),
-    NotificationsPage(),
-    ProfilePage(),
+    const HomePage(),
+    const SearchPage(),
+    const NewPostPage(),
+    const NotificationsPage(),
+    const ProfilePage(),
   ];
 
   @override
@@ -52,27 +61,12 @@ class _MainScreenState extends State<MainScreen> {
             _currentIndex = index;
           });
         },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_box),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_border),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: '',
-          ),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.add_box), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite_border), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: ''),
         ],
       ),
     );
