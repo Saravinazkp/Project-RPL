@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
 import 'pages/search_page.dart';
-import 'pages/new_post_page.dart';
-import 'pages/notifications_page.dart';
 import 'pages/profile_page.dart';
 import 'pages/landing_page.dart';
+import 'pages/login_page.dart';
+import 'pages/signup_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +13,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // Root widget dari aplikasi
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,6 +24,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const LandingPage(),
+        '/login': (context) => const LoginPage(),
+        '/signup': (context) => const SignUpPage(),
         '/main': (context) => const MainScreen(),
       },
     );
@@ -44,8 +45,6 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = [
     const HomePage(),
     const SearchPage(),
-    const NewPostPage(),
-    const NotificationsPage(),
     const ProfilePage(),
   ];
 
