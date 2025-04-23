@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Instagram Clone',
+      title: 'CodeConnect',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -24,8 +24,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const LandingPage(),
-        '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignUpPage(),
+        '/login': (context) => const LoginPage(),
         '/main': (context) => const MainScreen(),
       },
     );

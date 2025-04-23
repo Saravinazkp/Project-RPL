@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'login_page.dart'; // Tambahkan ini
+import 'signup_page.dart'; // Tambahkan ini
 
 class LandingPage extends StatelessWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -12,7 +14,6 @@ class LandingPage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          // Top-left decorative shape
           Positioned(
             top: 0,
             left: 0,
@@ -21,8 +22,6 @@ class LandingPage extends StatelessWidget {
               width: mq.width * 0.4,
             ),
           ),
-
-          // Bottom-right decorative shape
           Positioned(
             bottom: 0,
             right: 0,
@@ -31,8 +30,6 @@ class LandingPage extends StatelessWidget {
               width: mq.width * 0.5,
             ),
           ),
-
-          // Main content
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
@@ -41,8 +38,6 @@ class LandingPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const SizedBox(height: 24),
-
-                    // Title
                     const Text(
                       'Welcome\nTo CodeConnect',
                       textAlign: TextAlign.center,
@@ -51,24 +46,23 @@ class LandingPage extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-
                     const SizedBox(height: 32),
-
-                    // Illustration
                     Image.asset(
                       'assets/illustration.png',
                       width: mq.width * 0.7,
                     ),
-
                     const SizedBox(height: 48),
-
-                    // Login Button
                     SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          // TODO: navigasi ke halaman Login
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginPage(),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
@@ -80,16 +74,18 @@ class LandingPage extends StatelessWidget {
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 16),
-
-                    // Sign Up Button
                     SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          // TODO: navigasi ke halaman Sign Up
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SignUpPage(),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
@@ -101,10 +97,7 @@ class LandingPage extends StatelessWidget {
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 32),
-
-                    // Or Continue With
                     const Text(
                       'Or Continue With',
                       style: TextStyle(
@@ -112,10 +105,7 @@ class LandingPage extends StatelessWidget {
                         fontSize: 14,
                       ),
                     ),
-
                     const SizedBox(height: 16),
-
-                    // Social Icons
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -141,7 +131,6 @@ class LandingPage extends StatelessWidget {
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 24),
                   ],
                 ),
