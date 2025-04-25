@@ -1,117 +1,247 @@
-import 'package:flutter/material.dart';
+// lib/pages/home_page.dart
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+import 'package:flutter/material.dart';
+import 'package:rpl/data/db_provider.dart';
+import 'package:rpl/data/database.dart';
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late Future<User> _userFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _userFuture = DBProvider.db.select(DBProvider.db.users).getSingle();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Instagram Clone'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.camera_alt),
-            onPressed: () {
-              // Logika membuka kamera dapat ditambahkan di sini
-            },
-          )
-        ],
-      ),
-      body: ListView(
-        children: [
-          // Bagian stories (carousel horizontal)
-          SizedBox(
-            height: 100,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CircleAvatar(
-                        radius: 30,
-                        backgroundColor: Colors.grey[300],
-                        child: Icon(Icons.person, size: 30),
+    return FutureBuilder<User>(
+      future: _userFuture,
+      builder: (ctx, snap) {
+        if (snap.connectionState != ConnectionState.done) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snap.hasError || !snap.hasData) {
+          return const Center(child: Text('Gagal memuat data user'));
+        }
+        final user = snap.data!;
+        return SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // HEADER
+              Row(
+                children: [
+                  const CircleAvatar(
+                    radius: 24,
+                    backgroundImage:
+                        AssetImage('assets/avatar_placeholder.png'),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: RichText(
+                      text: TextSpan(
+                        style:
+                            const TextStyle(fontSize: 20, color: Colors.black),
+                        children: [
+                          const TextSpan(text: 'Welcome back, '),
+                          TextSpan(
+                              text: user.username,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
+                        ],
                       ),
                     ),
-                    Text('User $index'),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 24),
+
+              // KATEGORI
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Event Categories',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      'See all >',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(Icons.emoji_events, color: Colors.white),
+                    label: const Text('Competition'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      shape: const StadiumBorder(),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  OutlinedButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(Icons.lightbulb, color: Colors.blue),
+                    label: const Text('Upskill & Training'),
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Colors.blue),
+                      shape: const StadiumBorder(),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 24),
+
+              // UPCOMING
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Upcoming Competitions',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      'See all >',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                height: 180,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: const [
+                    EventCard(
+                      imageAsset: 'assets/events/srifoton2024.png',
+                      title: 'SRIFOTON 2024',
+                      date: '10 Des 2024',
+                    ),
+                    EventCard(
+                      imageAsset: 'assets/events/hackathon_xyz.png',
+                      title: 'Hackathon XYZ',
+                      date: '15 Jan 2025',
+                    ),
                   ],
-                );
-              },
-            ),
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // RECENTLY VIEWED
+              const Text(
+                'Recently Viewed Events',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Column(
+                children: const [
+                  EventCard(
+                    imageAsset: 'assets/events/srifoton2024.png',
+                    title: 'SRIFOTON 2024',
+                    date: '10 Des 2024',
+                  ),
+                  EventCard(
+                    imageAsset: 'assets/events/ai_workshop.png',
+                    title: 'AI Workshop',
+                    date: '20 Feb 2025',
+                  ),
+                ],
+              ),
+            ],
           ),
-          // Bagian post
-          ...List.generate(5, (index) {
-            return PostWidget(postIndex: index);
-          }),
-        ],
-      ),
+        );
+      },
     );
   }
 }
 
-class PostWidget extends StatelessWidget {
-  final int postIndex;
+class EventCard extends StatelessWidget {
+  final String imageAsset;
+  final String title;
+  final String date;
 
-  const PostWidget({super.key, required this.postIndex});
+  const EventCard({
+    Key? key,
+    required this.imageAsset,
+    required this.title,
+    required this.date,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header post
-          ListTile(
-            leading: CircleAvatar(
-              backgroundColor: Colors.grey[300],
-              child: Icon(Icons.person),
+    return SizedBox(
+      width: 300,
+      height: 180, // ★ tinggi tetap
+      child: Card(
+        color: Colors.black,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        clipBehavior: Clip.hardEdge,
+        margin: const EdgeInsets.only(right: 16, bottom: 16),
+        child: Stack(
+          children: [
+            // gambar
+            Positioned.fill(
+              child: Image.asset(
+                imageAsset,
+                fit: BoxFit.cover,
+              ),
             ),
-            title: Text('User $postIndex'),
-            subtitle: Text('Location'),
-            trailing: Icon(Icons.more_vert),
-          ),
-          // Tampilan gambar post
-          Container(
-            height: 300,
-            color: Colors.grey[200],
-            child: Center(child: Text('Post Image')),
-          ),
-          // Bagian ikon interaksi
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Icon(Icons.favorite_border),
-                SizedBox(width: 16),
-                Icon(Icons.comment),
-                SizedBox(width: 16),
-                Icon(Icons.send),
-                Spacer(),
-                Icon(Icons.bookmark_border),
-              ],
+            // judul & tanggal
+            Positioned(
+              bottom: 16,
+              left: 16,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    date,
+                    style: const TextStyle(color: Colors.white70, fontSize: 12),
+                  ),
+                ],
+              ),
             ),
-          ),
-          // Keterangan post
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text('Liked by user1, user2 and others'),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-            child:
-                Text('View all comments', style: TextStyle(color: Colors.grey)),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text('2 hours ago',
-                style: TextStyle(color: Colors.grey, fontSize: 12)),
-          ),
-          SizedBox(height: 8),
-        ],
+            // icon favorit
+            const Positioned(
+              top: 16,
+              right: 16,
+              child: Icon(Icons.star_border, color: Colors.white),
+            ),
+          ],
+        ),
       ),
     );
   }

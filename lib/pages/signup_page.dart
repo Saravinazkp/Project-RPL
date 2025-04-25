@@ -29,9 +29,9 @@ extension UserTypeExt on UserType {
   String get illustrationAsset {
     switch (this) {
       case UserType.organization:
-        return 'assets/illustration_organization.png';
+        return 'assets/signup.png';
       case UserType.personal:
-        return 'assets/illustration_personal.png';
+        return 'assets/signup.png';
     }
   }
 }

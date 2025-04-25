@@ -14,22 +14,6 @@ class LandingPage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Positioned(
-            top: 0,
-            left: 0,
-            child: Image.asset(
-              'assets/top_shape.png',
-              width: mq.width * 0.4,
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            child: Image.asset(
-              'assets/bottom_shape.png',
-              width: mq.width * 0.5,
-            ),
-          ),
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
@@ -39,7 +23,7 @@ class LandingPage extends StatelessWidget {
                   children: [
                     const SizedBox(height: 24),
                     const Text(
-                      'Welcome\nTo CodeConnect',
+                      'Welcome\nTo',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 32,
@@ -48,7 +32,7 @@ class LandingPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 32),
                     Image.asset(
-                      'assets/illustration.png',
+                      'assets/CodeConnect.png',
                       width: mq.width * 0.7,
                     ),
                     const SizedBox(height: 48),
