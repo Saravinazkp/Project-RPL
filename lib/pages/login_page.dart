@@ -1,6 +1,10 @@
 // lib/pages/login_page.dart
 
 import 'package:flutter/material.dart';
+import 'package:drift/drift.dart'
+    hide Column; // ← sembunyikan Column dari Drift
+import 'package:rpl/data/db_provider.dart';
+import 'package:rpl/data/database.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -22,24 +26,50 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _login() {
-    if (_formKey.currentState?.validate() ?? false) {
-      // TODO: proses login dengan _userCtrl.text & _passCtrl.text
+  Future<void> _login() async {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+
+    final db = DBProvider.db;
+    final input = _userCtrl.text.trim();
+    final password = _passCtrl.text;
+
+    // Query: cari record dimana username == input OR email == input
+    final query = db.select(db.users)
+      ..where((u) => u.username.equals(input) | u.email.equals(input));
+    final user = await query.getSingleOrNull();
+
+    if (user == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Logging in…')),
+        const SnackBar(content: Text('User tidak ditemukan')),
       );
+      return;
     }
+
+    if (user.password != password) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Password salah')),
+      );
+      return;
+    }
+
+    // Login sukses → navigasi ke MainScreen
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Login berhasil!')),
+    );
+    Navigator.pushReplacementNamed(context, '/main');
   }
 
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
           child: Column(
+            // Sekarang ini jelas Column dari Flutter
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               // Ilustrasi di atas
@@ -131,11 +161,10 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Don't Have an account? "),
+                  const Text("Don't have an account? "),
                   GestureDetector(
                     onTap: () {
-                      // TODO: navigasi ke halaman Sign Up
-                      Navigator.pushNamed(context, '/signup');
+                      Navigator.pushReplacementNamed(context, '/signup');
                     },
                     child: const Text(
                       'Create Now!',
