@@ -1,3 +1,5 @@
+// lib/data/database.dart
+
 import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
@@ -23,7 +25,24 @@ class Users extends Table {
       .customConstraint("CHECK(user_type IN ('organization','personal'))")();
 }
 
-@DriftDatabase(tables: [Users])
+/// Tabel events dengan kolom: id, pamphlet, title, description, date, location, contact
+class Events extends Table {
+  IntColumn get id => integer().autoIncrement()();
+
+  TextColumn get pamphlet => text().withLength(min: 1, max: 255)();
+
+  TextColumn get title => text().withLength(min: 1, max: 100)();
+
+  TextColumn get description => text()();
+
+  DateTimeColumn get date => dateTime()();
+
+  TextColumn get location => text().withLength(min: 1, max: 200)();
+
+  TextColumn get contact => text().withLength(min: 1, max: 100)();
+}
+
+@DriftDatabase(tables: [Users, Events])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
