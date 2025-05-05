@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => const SignUpPage(),
         '/login': (context) => const LoginPage(),
         '/main': (context) => const MainScreen(),
+        '/calendar_page': (context) => const ScheduleScreen(), 
       },
     );
   }
@@ -48,6 +49,7 @@ class _MainScreenState extends State<MainScreen> {
     const HomePage(),
     const SearchPage(),
     const ProfilePage(),
+    const ScheduleScreen(),
   ];
 
   @override
